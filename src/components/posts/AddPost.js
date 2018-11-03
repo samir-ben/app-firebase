@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addPost } from '../../store/actions/postActions';
+import { Redirect } from 'react-router-dom';
 
 class AddPost extends Component {
     state = {
@@ -18,6 +19,8 @@ class AddPost extends Component {
         this.props.addPost(this.state);
     }
     render() {
+        const { auth } = this.props;
+        if (!auth.uid) return <Redirect to='/signin' />
         return (
             <div className="container">
                 <form className="white" onSubmit={this.handleSubmit}>
@@ -39,10 +42,16 @@ class AddPost extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        auth: state.firebase.auth
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         addPost: (post) => dispatch(addPost(post))
     }
 }
 
-export default connect(null, mapDispatchToProps)(AddPost);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPost);
