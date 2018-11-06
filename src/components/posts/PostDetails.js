@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
+import moment from 'moment';
+import 'moment/locale/fr';
+moment.locale('fr');
 
 const PostDetails = (props) => {
     const { post, auth } = props;
@@ -16,8 +19,8 @@ const PostDetails = (props) => {
                         <p>{post.content}</p>
                     </div>
                     <div className="card-action grey lighten-4 grey-text">
-                        <div>Posted by {post.authFirstName} {post.authLastName}</div>
-                        <div>2nd September, 2am</div>
+                        <div>Posted by {post.authorFirstName} {post.authorLastName}</div>
+                        <div>{moment(post.createdAt.toDate()).calendar()}</div>
                     </div>
                 </div>
             </div>
